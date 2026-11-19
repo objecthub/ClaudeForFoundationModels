@@ -4,6 +4,7 @@
 import Foundation
 
 /// A single block within a message's `content` array.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum ContentBlock: Sendable, Hashable, Codable {
   case text(String)
   case image(ImageSource)
@@ -102,6 +103,7 @@ package enum ContentBlock: Sendable, Hashable, Codable {
 
 /// Image payload for an `image` content block. `data` is raw bytes in memory;
 /// it crosses the wire base64-encoded.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct ImageSource: Sendable, Hashable, Codable {
   package var mediaType: String
   package var data: Data

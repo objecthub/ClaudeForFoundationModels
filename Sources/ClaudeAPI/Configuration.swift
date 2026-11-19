@@ -3,6 +3,7 @@
 
 import Foundation
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct Configuration: Sendable {
   package enum Auth: Sendable, Hashable {
     case apiKey(String)

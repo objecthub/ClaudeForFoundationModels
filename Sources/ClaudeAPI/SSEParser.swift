@@ -10,6 +10,7 @@ import Foundation
 /// swallows the blank separator — the frame must be emitted the moment its
 /// blank line arrives, not when the next frame starts, or every event would be
 /// delivered one frame late.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 enum SSEParser {
   static func events(
     from bytes: AsyncThrowingStream<UInt8, Error>

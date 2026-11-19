@@ -13,6 +13,7 @@ import Foundation
 /// the per-app attribution for API-key and proxy auth where there's no
 /// `application_slug`. Best-effort and self-reported — analytics, not a trust
 /// boundary.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum Telemetry {
   package static let sdkVersion = "0.2.3"  // x-release-please-version
 

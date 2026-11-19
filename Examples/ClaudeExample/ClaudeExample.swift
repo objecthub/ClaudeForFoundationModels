@@ -14,6 +14,7 @@ import FoundationModels
 ///
 ///     ANTHROPIC_API_KEY=<key> swift run ClaudeExample --search "Top spaceflight news this week?"
 @main
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 struct ClaudeExample {
   static func main() async {
     guard
@@ -81,6 +82,7 @@ struct ClaudeExample {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 private func fail(_ message: String) -> Never {
   FileHandle.standardError.write(Data((message + "\n").utf8))
   exit(1)

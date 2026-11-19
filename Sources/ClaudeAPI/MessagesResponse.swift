@@ -6,6 +6,7 @@ import Foundation
 /// Response body for `POST /v1/messages`. When streaming, the same shape
 /// arrives as the `message_start` payload, with `content` empty and `usage`
 /// carrying the prompt-side counts.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct MessagesResponse: Sendable, Codable {
   package var id: String
   package var model: String
@@ -20,6 +21,7 @@ package struct MessagesResponse: Sendable, Codable {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum StopReason: String, Sendable, Codable {
   case endTurn = "end_turn"
   case maxTokens = "max_tokens"
@@ -40,6 +42,7 @@ package enum StopReason: String, Sendable, Codable {
 /// Token counts as the API reports them: `inputTokens` covers only the
 /// uncached portion of the prompt — cache reads and writes are separate
 /// fields, so the full prompt size is the sum of all three.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct Usage: Sendable, Codable, Hashable {
   package var inputTokens: Int?
   package var outputTokens: Int

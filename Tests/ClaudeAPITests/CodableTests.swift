@@ -7,6 +7,7 @@ import Testing
 @testable import ClaudeAPI
 
 @Suite struct CodableTests {
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `encodes a full MessagesRequest`() throws {
     let req = MessagesRequest(
       model: "claude-opus-4-7",
@@ -37,6 +38,7 @@ import Testing
   // A fallback entry's field replaces the request's whole field for that
   // model, and the API reads `null` as "keep the request's value". So an entry
   // writes only the fields it overrides, and each one is complete.
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `fallback entries write only the fields they override`() throws {
     let entries: [Fallback] = [
       .init(model: "claude-a"),
@@ -60,6 +62,7 @@ import Testing
     #expect(try JSONDecoder().decode(Fallbacks.self, from: data) == .models(entries))
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `each form of fallbacks names the beta it needs`() {
     #expect(Fallbacks.models([.init(model: "claude-a")]).requiredBeta == Fallbacks.betaHeader)
     #expect(Fallbacks.serverDefault.requiredBeta == Fallbacks.defaultRoutingBetaHeader)
@@ -67,6 +70,7 @@ import Testing
     #expect(Fallbacks.defaultRoutingBetaHeader == "server-side-fallback-2026-07-01")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `a request sends fallbacks only when it has some`() throws {
     let withDefault = MessagesRequest(
       model: "claude-a",
@@ -85,6 +89,7 @@ import Testing
     #expect(plainJSON["fallbacks"] == nil)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `decodes a text delta event`() throws {
     let payload =
       #"{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hi"}}"#
@@ -97,6 +102,7 @@ import Testing
     #expect(t == "Hi")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `decodes a message delta event with usage`() throws {
     let payload =
       #"{"type":"message_delta","delta":{"stop_reason":"end_turn"},"usage":{"output_tokens":12}}"#
@@ -110,6 +116,7 @@ import Testing
     #expect(usage.inputTokens == nil)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `decodes the API error envelope`() throws {
     let body =
       #"{"type":"error","error":{"type":"rate_limit_error","message":"slow down"},"request_id":"req_123"}"#
@@ -118,6 +125,7 @@ import Testing
     #expect(env.requestID == "req_123")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `decodes a tool_use content block`() throws {
     let payload = #"{"type":"tool_use","id":"toolu_1","name":"get_weather","input":{"city":"SF"}}"#
     let block = try JSONDecoder().decode(ContentBlock.self, from: Data(payload.utf8))

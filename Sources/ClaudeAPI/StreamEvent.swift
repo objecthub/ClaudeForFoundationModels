@@ -4,6 +4,7 @@
 import Foundation
 
 /// Server-sent event payloads from `POST /v1/messages` with `stream: true`.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum StreamEvent: Sendable, Decodable {
   case messageStart(MessagesResponse)
   /// `block` is the block object exactly as the API sent it: assistant

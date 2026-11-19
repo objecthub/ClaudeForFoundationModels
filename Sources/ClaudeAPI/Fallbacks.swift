@@ -6,6 +6,7 @@ import Foundation
 /// `fallbacks`: substitute models the API tries, in order, when the requested
 /// model declines for policy reasons. The request needs the
 /// ``Fallbacks/betaHeader`` opt-in.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum Fallbacks: Sendable, Hashable, Codable {
   /// Each entry names a model, plus any request field that model needs to be
   /// different from the request's own.
@@ -57,6 +58,7 @@ package enum Fallbacks: Sendable, Hashable, Codable {
 /// replaces the request's whole field for this model. A missing or `null`
 /// override keeps the request's value, so a field can't be unset, and an
 /// override is always a complete value.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct Fallback: Sendable, Hashable, Codable {
   package var model: String
   /// This model's `thinking`, in place of the request's.

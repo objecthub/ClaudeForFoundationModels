@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /// Names of request headers that the API defines.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum HeaderName {
   /// The opt-ins that a request needs, as a comma-separated list.
   package static let beta = "anthropic-beta"
@@ -11,6 +12,7 @@ package enum HeaderName {
 
 /// User profiles, which attribute requests to someone other than the
 /// organization.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum UserProfiles {
   /// The `anthropic-beta` value that ``HeaderName/userProfileID`` needs.
   package static let betaHeader = "user-profiles-2026-08-18"

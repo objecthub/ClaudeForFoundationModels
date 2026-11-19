@@ -11,6 +11,7 @@ import Testing
 
   // MARK: - JSONValue
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `JSONValue round-trips every case`() throws {
     let value: JSONValue = .object([
       "n": .null,
@@ -25,6 +26,7 @@ import Testing
     #expect(decoded == value)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `JSONValue literals build the expected cases`() {
     #expect(JSONValue(nilLiteral: ()) == .null)
     let dict: JSONValue = ["a": 1, "ok": true, "name": "x"]
@@ -35,6 +37,7 @@ import Testing
 
   // MARK: - ContentBlock
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `ContentBlock image round-trips as base64`() throws {
     let block = ContentBlock.image(
       ImageSource(mediaType: "image/jpeg", data: Data([0xFF, 0xD8, 0xFF]))
@@ -47,6 +50,7 @@ import Testing
     #expect(try JSONDecoder().decode(ContentBlock.self, from: data) == block)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `ImageSource rejects invalid base64`() {
     let payload = #"{"type":"base64","media_type":"image/png","data":"not base64!!"}"#
     #expect(throws: DecodingError.self) {
@@ -54,6 +58,7 @@ import Testing
     }
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `tool_result omits is_error when false, emits it when true`() throws {
     let ok = try #require(
       try JSONSerialization.jsonObject(
@@ -76,6 +81,7 @@ import Testing
     #expect(bad["is_error"] as? Bool == true)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `tool_result content encodes lone text as a string and mixed blocks as an array`()
     throws
   {
@@ -106,6 +112,7 @@ import Testing
     #expect(blocks[1]["type"] as? String == "image")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `thinking decodes with and without a signature`() throws {
     let signed = try JSONDecoder()
       .decode(
@@ -122,6 +129,7 @@ import Testing
     #expect(unsigned == .thinking("hmm", signature: nil))
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `blocks without a typed case decode as the object sent and encode back to it`()
     throws
   {
@@ -142,6 +150,7 @@ import Testing
     }
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `unknown stop_reason decodes leniently instead of killing the stream`() throws {
     let payload =
       #"{"type":"message_delta","delta":{"stop_reason":"some_future_reason"},"usage":{"output_tokens":1}}"#
@@ -163,6 +172,7 @@ import Testing
     }
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `unknown error type still decodes as a typed APIError`() throws {
     let payload =
       #"{"type":"error","error":{"type":"billing_error","message":"insufficient funds"}}"#
@@ -177,6 +187,7 @@ import Testing
 
   // MARK: - ToolDefinition
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `server tool definitions round-trip their flat config`() throws {
     let tool = ToolDefinition(
       serverType: "web_search_20260209",
@@ -196,6 +207,7 @@ import Testing
 
   // MARK: - StreamEvent
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `message_start decodes the seed response`() throws {
     let payload = #"""
       {"type":"message_start","message":{"id":"msg_1","model":"claude-opus-4-7","role":"assistant","content":[],"usage":{"input_tokens":7,"output_tokens":0}}}
@@ -209,6 +221,7 @@ import Testing
     #expect(resp.usage.inputTokens == 7)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `content_block_start carries the block as sent, unmodeled fields included`() throws {
     let payload = #"""
       {"type":"content_block_start","index":2,"content_block":{"type":"server_tool_use","id":"srv_1","name":"web_search","input":{},"caller":{"type":"code_execution_20260120","tool_id":"srv_0"}}}
@@ -228,6 +241,7 @@ import Testing
     )
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `citations_delta decodes the citation as sent`() throws {
     let payload = #"""
       {"type":"content_block_delta","index":0,"delta":{"type":"citations_delta","citation":{"type":"web_search_result_location","url":"https://a.example","encrypted_index":"opaque"}}}
@@ -246,6 +260,7 @@ import Testing
     )
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `a raw block encodes as the object it holds`() throws {
     let message = Message(
       role: .assistant,
@@ -260,6 +275,7 @@ import Testing
     #expect(content[1]["type"] as? String == "text")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `thinking, signature, and input_json deltas decode`() throws {
     // StreamEvent / Delta aren't Equatable, so match structurally.
     func delta(_ json: String) throws -> StreamEvent.Delta {
@@ -301,6 +317,7 @@ import Testing
     #expect(j == #"{"a":1}"#)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `unknown delta and event types surface, not throw`() throws {
     let unknownDelta = try JSONDecoder()
       .decode(
@@ -327,6 +344,7 @@ import Testing
     )
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `message_stop and ping decode`() throws {
     let stop = try JSONDecoder()
       .decode(StreamEvent.self, from: Data(#"{"type":"message_stop"}"#.utf8))
@@ -337,6 +355,7 @@ import Testing
 
   // MARK: - MessagesResponse
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `MessagesResponse decodes content, stop reason, and cache usage`() throws {
     let payload = #"""
       {"id":"msg_2","model":"claude-sonnet-4-6","role":"assistant","content":[{"type":"text","text":"hello"}],"stop_reason":"end_turn","usage":{"input_tokens":100,"output_tokens":20,"cache_read_input_tokens":80}}
@@ -353,6 +372,7 @@ import Testing
 
   // MARK: - APIError
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `APIError description includes the request id when present`() {
     let withID = APIError(kind: .rateLimit, message: "slow down", requestID: "req_9")
     #expect(withID.errorDescription == "rate_limit_error: slow down (request_id: req_9)")

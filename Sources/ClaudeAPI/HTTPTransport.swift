@@ -8,6 +8,7 @@ import Synchronization
 /// ``URLSessionTransport``; tests inject a fake. The streaming body is surfaced
 /// as a byte stream rather than `URLSession.AsyncBytes` so a fake can produce
 /// one — `AsyncBytes` can only be vended by a live `URLSession`.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package protocol HTTPTransport: Sendable {
   func data(for request: URLRequest) async throws -> (Data, URLResponse)
   func bytes(
@@ -15,6 +16,7 @@ package protocol HTTPTransport: Sendable {
   ) async throws -> (AsyncThrowingStream<UInt8, Error>, URLResponse)
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum HTTPTransportError: Error, Sendable, Hashable {
   /// The server redirected to a different scheme, host, or port and the
   /// transport refused to follow. Every request carries a credential minted
@@ -24,6 +26,7 @@ package enum HTTPTransportError: Error, Sendable, Hashable {
   case crossOriginRedirect(to: URL)
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 extension HTTPTransportError: LocalizedError {
   package var errorDescription: String? {
     switch self {
@@ -34,6 +37,7 @@ extension HTTPTransportError: LocalizedError {
 }
 
 /// `URLSession`-backed transport used in production.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct URLSessionTransport: HTTPTransport {
   private let session: URLSession
 
@@ -82,6 +86,7 @@ package struct URLSessionTransport: HTTPTransport {
 /// A refused redirect makes `URLSession` complete the task with the 3xx
 /// response itself, which callers would otherwise take for a success, so the
 /// refusal is recorded and ``checkRefused()`` turns it into an error.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 final class RedirectPolicy: NSObject, URLSessionTaskDelegate, Sendable {
   /// Nil when the request had no usable URL, in which case nothing is
   /// followed.

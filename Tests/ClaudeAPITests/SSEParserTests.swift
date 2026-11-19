@@ -7,6 +7,7 @@ import Testing
 @testable import ClaudeAPI
 
 @Suite struct SSEParserTests {
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test(.timeLimit(.minutes(1)))
   func `an event is delivered as soon as its frame ends`() async throws {
     let (bytes, continuation) = AsyncThrowingStream<UInt8, Error>.makeStream()
@@ -25,6 +26,7 @@ import Testing
     continuation.finish()
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `crlf line endings parse like lf`() async throws {
     let events = try await collect(
       "event: ping\r\ndata: {\"type\":\"ping\"}\r\n\r\n"
@@ -33,6 +35,7 @@ import Testing
     #expect(events.count == 2)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `a final frame without a trailing blank line flushes at end of stream`() async throws {
     let events = try await collect("event: ping\ndata: {\"type\":\"ping\"}")
     #expect(events.count == 1)
@@ -40,6 +43,7 @@ import Testing
 
   // MARK: - Helpers
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   private func collect(_ body: String) async throws -> [StreamEvent] {
     let bytes = AsyncThrowingStream<UInt8, Error> { continuation in
       for byte in Data(body.utf8) { continuation.yield(byte) }

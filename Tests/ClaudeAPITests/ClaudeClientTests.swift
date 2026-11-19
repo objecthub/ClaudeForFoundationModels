@@ -14,6 +14,7 @@ import Testing
 
   // MARK: - Non-streaming
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `send builds the request and decodes the response`() async throws {
     let transport = MockTransport(
       headers: ["Content-Type": "application/json"],
@@ -54,6 +55,7 @@ import Testing
     #expect((json["messages"] as? [[String: Any]])?.count == 1)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `caller headers merge over the defaults`() async throws {
     // This is the mechanism `.proxied(headers:)` rides on: the executor passes
     // its auth headers as `headers:`, and the client merges them over its
@@ -78,6 +80,7 @@ import Testing
     #expect(request.value(forHTTPHeaderField: "anthropic-version") == "2023-06-01")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `send maps an error envelope to a typed APIError`() async throws {
     let transport = MockTransport(
       status: 429,
@@ -94,6 +97,7 @@ import Testing
     #expect(error.requestID == "req_envelope")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `send falls back to the request-id header when the body has no envelope`() async throws
   {
     let transport = MockTransport(
@@ -112,6 +116,7 @@ import Testing
 
   // MARK: - Streaming
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `stream parses frames, surfaces ping, and ends on message_stop`() async throws {
     let transport = MockTransport(
       body: sse([
@@ -145,6 +150,7 @@ import Testing
     #expect(events.contains { if case .messageStop = $0 { true } else { false } })
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `stream concatenates a multi-line data frame`() async throws {
     let transport = MockTransport(
       body: sse([
@@ -167,6 +173,7 @@ import Testing
     #expect(texts == ["multi"])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `stream throws when the body carries an SSE error event`() async throws {
     let transport = MockTransport(
       body: sse([
@@ -187,6 +194,7 @@ import Testing
     #expect(error.kind == .overloaded)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `a non-envelope error body classifies by HTTP status`() async throws {
     let transport = MockTransport(status: 401, body: Data("<html>denied</html>".utf8))
 
@@ -200,6 +208,7 @@ import Testing
     #expect(error.kind == .authentication)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `stream maps a 4xx error body instead of parsing it as SSE`() async throws {
     let transport = MockTransport(
       status: 400,
@@ -218,6 +227,7 @@ import Testing
     #expect(error.kind == .invalidRequest)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `streamText yields cumulative snapshots`() async throws {
     let transport = MockTransport(
       body: sse([
@@ -246,6 +256,7 @@ import Testing
 
   // MARK: - Helpers
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   private func client(
     _ transport: any HTTPTransport,
     auth: Configuration.Auth = .apiKey("sk-test")
@@ -258,12 +269,14 @@ import Testing
 
   /// A `text/event-stream` body: each frame is its lines followed by the
   /// blank line that terminates it, exactly as the API frames them.
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   private func sse(_ frames: [[String]]) -> Data {
     Data(frames.map { $0.joined(separator: "\n") + "\n\n" }.joined().utf8)
   }
 }
 
 /// An `HTTPTransport` that returns a canned response and records the request it received.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 private final class MockTransport: HTTPTransport {
   let status: Int
   let headers: [String: String]

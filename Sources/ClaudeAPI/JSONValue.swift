@@ -5,6 +5,7 @@ import Foundation
 
 /// Loosely-typed JSON for tool inputs/outputs and schemas, where the shape
 /// is determined at runtime.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum JSONValue: Sendable, Hashable, Codable {
   case null
   case bool(Bool)
@@ -55,6 +56,7 @@ package enum JSONValue: Sendable, Hashable, Codable {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 extension JSONValue {
   /// The named field of an object; `nil` for a missing field or a non-object.
   package subscript(field: String) -> JSONValue? {
@@ -78,6 +80,7 @@ extension JSONValue {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 extension JSONValue: ExpressibleByNilLiteral, ExpressibleByBooleanLiteral,
   ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral,
   ExpressibleByStringLiteral, ExpressibleByArrayLiteral,

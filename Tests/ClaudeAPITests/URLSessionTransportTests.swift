@@ -15,11 +15,13 @@ import Testing
 
   // MARK: - Decision
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test(arguments: [
     "https://proxy.test/moved",
     "https://proxy.test:443/v1/messages",
     "HTTPS://Proxy.TEST/v1/messages",
   ])
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   func `a redirect within the origin's authority is followed`(target: String) {
     let policy = RedirectPolicy(origin: URL(string: "https://proxy.test/v1/messages"))
 
@@ -27,12 +29,14 @@ import Testing
     #expect(throws: Never.self) { try policy.checkRefused() }
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test(arguments: [
     "https://other.test/v1/messages",
     "https://proxy.test.other.test/v1/messages",
     "https://proxy.test:8443/v1/messages",
     "http://proxy.test/v1/messages",
   ])
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   func `a redirect to another authority is refused and reported`(target: String) {
     let policy = RedirectPolicy(origin: URL(string: "https://proxy.test/v1/messages"))
     let url = URL(string: target)!
@@ -41,6 +45,7 @@ import Testing
     #expect(throws: HTTPTransportError.crossOriginRedirect(to: url)) { try policy.checkRefused() }
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `an explicit default port matches an omitted one for http too`() {
     let policy = RedirectPolicy(origin: URL(string: "http://proxy.test:80/v1/messages"))
 
@@ -48,6 +53,7 @@ import Testing
     #expect(!policy.allowsRedirect(to: URL(string: "https://proxy.test/moved")!))
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `nothing is followed when the origin has no authority`() {
     let policy = RedirectPolicy(origin: nil)
 
@@ -57,6 +63,7 @@ import Testing
 
   // MARK: - Through URLSession
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `data refuses a redirect to another host`() async throws {
     let stub = Stub("data-cross")
     stub.redirectOrigin(to: stub.otherURL)
@@ -74,6 +81,7 @@ import Testing
     #expect(stub.receivedHosts == [stub.originHost])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `bytes refuses a redirect to another host`() async throws {
     let stub = Stub("bytes-cross")
     stub.redirectOrigin(to: stub.otherURL)
@@ -90,6 +98,7 @@ import Testing
     #expect(stub.receivedHosts == [stub.originHost])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `data follows an origin-host redirect and keeps the credentials`() async throws {
     let stub = Stub("data-same")
     stub.redirectOrigin(to: stub.movedURL)
@@ -105,6 +114,7 @@ import Testing
     #expect(followUp.value(forHTTPHeaderField: "X-App-Token") == "app-secret")
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `bytes follows an origin-host redirect and keeps the credentials`() async throws {
     let stub = Stub("bytes-same")
     stub.redirectOrigin(to: stub.movedURL)
@@ -128,6 +138,7 @@ import Testing
 /// One test's slice of ``StubProtocol``: an origin host whose `/v1/messages`
 /// answers with a 307, and a second host standing in for wherever the
 /// redirect points. Every other request on either host answers 200 `ok`.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 private struct Stub {
   let originHost: String
   let otherHost: String
@@ -171,6 +182,7 @@ private struct Stub {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 private final class Recorder: Sendable {
   let requests = Mutex<[URLRequest]>([])
 }
@@ -179,6 +191,7 @@ private final class Recorder: Sendable {
 /// the network. A `.redirect` reply goes through `URLSession`'s redirect
 /// machinery, so the task delegate under test decides whether the follow-up
 /// request is loaded.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 private final class StubProtocol: URLProtocol {
   enum Reply: Sendable {
     case redirect(to: URL)

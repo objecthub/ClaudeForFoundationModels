@@ -10,7 +10,9 @@ import Testing
 /// SwiftPM `xctest` runner doesn't carry — every call returns
 /// `errSecMissingEntitlement` (-34018) there. The probe gates the suite so
 /// it runs only where it can (a host app, a signed test bundle).
+// lispkit: no-availability
 private let keychainAvailable: Bool = {
+  guard #available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *) else { return false }
   let probe = KeychainAppAttestStore(service: "com.anthropic.cffm.tests.probe")
   do {
     try probe.setKeyID("probe", for: "probe")
@@ -26,11 +28,12 @@ struct AppAttestStoreTests {
   /// A throwaway service string per test instance keeps the suite from
   /// touching the production namespace and makes leftovers from a crashed
   /// run harmless.
-  private let store = KeychainAppAttestStore(
-    service: "com.anthropic.claude-foundation-models.tests.\(UUID().uuidString)"
-  )
+  private let service = "com.anthropic.claude-foundation-models.tests.\(UUID().uuidString)"
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
+  private var store: KeychainAppAttestStore { KeychainAppAttestStore(service: service) }
   private let clientID = "clid_test"
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `key id round-trips and clears`() throws {
     defer { try? store.clear(for: clientID) }
     #expect(try store.keyID(for: clientID) == nil)
@@ -45,6 +48,7 @@ struct AppAttestStoreTests {
     #expect(try store.keyID(for: clientID) == nil)
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `token round-trips and deletes`() throws {
     defer { try? store.clear(for: clientID) }
     #expect(try store.token(for: clientID) == nil)
@@ -58,6 +62,7 @@ struct AppAttestStoreTests {
     try store.deleteToken(for: clientID)  // idempotent
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `client ids are isolated`() throws {
     defer {
       try? store.clear(for: "a")

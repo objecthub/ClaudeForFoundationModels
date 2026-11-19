@@ -5,6 +5,7 @@ import Foundation
 
 /// Error envelope returned by the API (both in HTTP error bodies and as an
 /// SSE `error` event).
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct APIError: Error, Sendable, Hashable, Codable {
   package enum Kind: String, Sendable, Codable {
     case invalidRequest = "invalid_request_error"
@@ -51,6 +52,7 @@ package struct APIError: Error, Sendable, Hashable, Codable {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 extension APIError: LocalizedError {
   package var errorDescription: String? {
     "\(kind.rawValue): \(message)" + (requestID.map { " (request_id: \($0))" } ?? "")
@@ -58,6 +60,7 @@ extension APIError: LocalizedError {
 }
 
 /// Top-level error body: `{ "type": "error", "error": {...}, "request_id": "..." }`
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 struct APIErrorEnvelope: Decodable {
   var error: APIError
   var requestID: String?

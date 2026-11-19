@@ -7,6 +7,7 @@ import Testing
 @testable import ClaudeAPI
 
 @Suite struct ContentAssemblerTests {
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   private func assemble(_ eventJSON: [String]) throws -> [JSONValue] {
     var assembler = ContentAssembler()
     return try eventJSON.compactMap { json in
@@ -14,6 +15,7 @@ import Testing
     }
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `text deltas and citations fold into the text block`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}"#,
@@ -37,6 +39,7 @@ import Testing
     )
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `streamed tool input replaces the start block's placeholder`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srv_1","name":"web_search","input":{}}}"#,
@@ -54,6 +57,7 @@ import Testing
     )
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `input delivered whole in the start block is kept when no deltas follow`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"server_tool_use","id":"srv_1","name":"web_search","input":{"query":"weather"}}}"#,
@@ -63,6 +67,7 @@ import Testing
     #expect(block["input"] == ["query": "weather"])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `thinking text and signature fold into the thinking block`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"thinking","thinking":"","signature":""}}"#,
@@ -74,6 +79,7 @@ import Testing
     #expect(blocks == [["type": "thinking", "thinking": "Let me think.", "signature": "c2ln"]])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `blocks that arrive whole and unknown block types are kept as sent`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"web_search_tool_result","tool_use_id":"srv_1","content":[{"type":"web_search_result","url":"https://a.example","encrypted_content":"opaque","page_age":null}]}}"#,
@@ -99,6 +105,7 @@ import Testing
     )
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `interleaved blocks come out in index order of completion`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}"#,
@@ -113,6 +120,7 @@ import Testing
     #expect(blocks.map { $0["type"] } == ["text", "server_tool_use", "text"])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `a text block that received no text is omitted`() throws {
     let blocks = try assemble([
       #"{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}"#,
@@ -123,6 +131,7 @@ import Testing
     #expect(blocks.map { $0["type"] } == ["tool_use"])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `a continuation response appends after the paused content`() throws {
     let blocks = try assemble([
       #"{"type":"message_start","message":{"id":"m1","model":"x","role":"assistant","content":[],"usage":{"input_tokens":1,"output_tokens":1}}}"#,
@@ -139,6 +148,7 @@ import Testing
     #expect(blocks.map { $0["type"] } == ["server_tool_use", "web_search_tool_result", "text"])
   }
 
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `only the stop of a started block yields it`() throws {
     var assembler = ContentAssembler()
     func consume(_ json: String) throws -> JSONValue? {

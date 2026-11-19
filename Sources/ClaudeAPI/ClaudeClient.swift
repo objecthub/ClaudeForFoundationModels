@@ -4,6 +4,7 @@
 import Foundation
 
 /// Thin HTTP client for `POST /v1/messages`.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct ClaudeClient: Sendable {
   package let configuration: Configuration
   private let transport: any HTTPTransport

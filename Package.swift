@@ -6,10 +6,12 @@ import PackageDescription
 
 let package = Package(
   name: "ClaudeForFoundationModels",
-  // Every OS where Foundation Models supports server-side language models.
-  // Spelled as strings because the .v27 constants require tools-version 6.4.
+  // LispKit fork: the package builds for older deployment targets, but every
+  // declaration is annotated with @available(... 27.0 ...) by
+  // scripts/annotate-availability.sh, so the API is only usable on the OS 27
+  // releases, where Foundation Models supports server-side language models.
   platforms: [
-    .iOS("27.0"), .macOS("27.0"), .visionOS("27.0"), .watchOS("27.0"),
+    .iOS(.v17), .macOS(.v14), .visionOS("27.0"), .watchOS("27.0"),
   ],
   products: [
     .library(name: "ClaudeForFoundationModels", targets: ["ClaudeForFoundationModels"])

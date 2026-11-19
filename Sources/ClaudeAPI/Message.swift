@@ -3,6 +3,7 @@
 
 import Foundation
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct Message: Sendable, Hashable, Codable {
   package enum Role: String, Sendable, Codable { case user, assistant }
 

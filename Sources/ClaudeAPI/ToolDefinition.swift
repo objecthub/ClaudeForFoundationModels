@@ -6,6 +6,7 @@ import Foundation
 /// Two wire shapes share the `tools` array — discriminated by the presence of
 /// `type`. Custom tools carry `description` + `input_schema`; server-side
 /// tools carry a versioned `type` plus tool-specific config keys.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct ToolDefinition: Sendable, Hashable, Codable {
   package var name: String
   package var description: String?
@@ -80,6 +81,7 @@ package struct ToolDefinition: Sendable, Hashable, Codable {
   }
 }
 
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package enum ToolChoice: Sendable, Hashable, Codable {
   case auto
   case any

@@ -12,6 +12,7 @@ import Foundation
 /// Block indices are scoped to one response; `message_start` begins a new
 /// one, so a single assembler can be fed a turn's `pause_turn`
 /// continuations back to back.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct ContentAssembler: Sendable {
   /// Blocks of the current response that have started but not stopped,
   /// keyed by their index within that response.

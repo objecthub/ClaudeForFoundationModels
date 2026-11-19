@@ -4,6 +4,7 @@
 import Foundation
 
 /// Request body for `POST /v1/messages`.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct MessagesRequest: Sendable, Codable {
   package var model: String
   package var maxTokens: Int
@@ -66,6 +67,7 @@ package struct MessagesRequest: Sendable, Codable {
 }
 
 /// Output shaping: structured output via constrained decoding, effort level.
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
 package struct OutputConfig: Sendable, Hashable, Codable {
   package var format: Format?
   package var effort: Effort?
