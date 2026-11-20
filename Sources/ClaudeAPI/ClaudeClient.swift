@@ -117,9 +117,7 @@ package struct ClaudeClient: Sendable {
     for (key, value) in headers {
       req.setValue(value, forHTTPHeaderField: key)
     }
-    let encoder = JSONEncoder()
-    encoder.outputFormatting = .sortedKeys
-    req.httpBody = try encoder.encode(body)
+    req.httpBody = try JSONValue.encodeBody(body)
     return req
   }
 

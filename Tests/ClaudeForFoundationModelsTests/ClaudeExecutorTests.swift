@@ -22,6 +22,35 @@ import Testing
     #expect(request.value(forHTTPHeaderField: "x-api-key") == "sk-test")
   }
 
+  // Constrained decoding writes the properties in the order of the schema, so
+  // the declaration order has to survive the sorted-keys encoding of the body.
+  @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
+  @Test func `a schema reaches the wire with its properties in declared order`() async throws {
+    let transport = MockTransport(body: okStream)
+    let session = LanguageModelSession(
+      model: StubbedClaudeModel(
+        transport: transport,
+        auth: .apiKey("sk-test"),
+        capabilities: [.toolCalling, .reasoning, .guidedGeneration]
+      )
+    )
+
+    // The canned response is not an Itinerary, so the call may fail to decode it.
+    _ = try? await session.respond(to: "Plan a trip", generating: WireItinerary.self)
+
+    let request = try #require(transport.lastRequest)
+    let body = String(decoding: try #require(request.httpBody), as: UTF8.self)
+    let properties = try #require(body.range(of: #""properties":{"title""#))
+    #expect(body[properties.lowerBound...].contains(#""activities""#))
+    let title = try #require(body.range(of: #""title":{"#))
+    let activities = try #require(body.range(of: #""activities":{"#))
+    let budget = try #require(body.range(of: #""budget":{"#))
+    #expect(title.lowerBound < activities.lowerBound)
+    #expect(activities.lowerBound < budget.lowerBound)
+    #expect(!body.contains("x-order"))
+    #expect(!body.contains("x-property-order"))
+  }
+
   @available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
   @Test func `proxied auth sends the proxy headers and no api key`() async throws {
     let transport = MockTransport(body: okStream)
@@ -431,4 +460,12 @@ import Testing
     ],
     ])
   }
+}
+
+@Generable
+@available(iOS 27.0, macOS 27.0, visionOS 27.0, watchOS 27.0, *)
+private struct WireItinerary {
+  var title: String
+  var activities: [String]
+  var budget: Int
 }

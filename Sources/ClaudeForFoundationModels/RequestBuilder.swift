@@ -287,6 +287,13 @@ enum RequestBuilder {
           out[key] = sanitize(v)
         }
       }
+      // Apple-internal `x-order` lists the properties in declaration order. The
+      // API rejects the key, but a model writes properties in schema order, so
+      // the order is kept as an in-memory hint that `JSONValue.encodeBody(_:)`
+      // applies when it encodes the request.
+      if case .array(let order)? = dict["x-order"] {
+        out[JSONValue.propertyOrderKey] = .array(order)
+      }
       // The API requires `additionalProperties: false` on every object.
       if out["type"] == .string("object"), out["additionalProperties"] == nil {
         out["additionalProperties"] = .bool(false)
