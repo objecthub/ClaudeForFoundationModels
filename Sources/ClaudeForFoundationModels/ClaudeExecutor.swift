@@ -58,11 +58,10 @@ public struct ClaudeExecutor: LanguageModelExecutor {
     )
   }
 
-  /// Builds a transport honoring the configured request timeout.
+  /// Builds a transport honoring the configured request timeout, on the
+  /// session shared by all requests with that timeout.
   static func makeTransport(timeout: TimeInterval) -> URLSessionTransport {
-    let sessionConfig = URLSessionConfiguration.default
-    sessionConfig.timeoutIntervalForRequest = timeout
-    return URLSessionTransport(session: URLSession(configuration: sessionConfig))
+    URLSessionTransport.shared(timeout: timeout)
   }
 
   /// Injects the transport so the executor can be exercised without a network.
